@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { Routing } from '@/common/routing/Routing';
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <div>count {count}</div>;
+  return (
+    <>
+      <Routing />
+    </>
+  );
 }
 
 export default App;
