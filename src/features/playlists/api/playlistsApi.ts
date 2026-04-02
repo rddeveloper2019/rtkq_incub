@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type {
   PlaylistsResponse,
   FetchPlaylistsArgs,
@@ -6,26 +5,9 @@ import type {
   CreatePlaylistArgs,
   UpdatePlaylistArgs,
 } from './playlistsApi.types';
+import { baseApi } from '@/app/baseApi';
 
-export const playlistsApi = createApi({
-  reducerPath: 'playlistsApi',
-
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL ?? '',
-    headers: {
-      // 'API-KEY': import.meta.env.VITE_API_KEY ?? '',
-      'content-type': 'application/json; charset=utf-8',
-    },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    prepareHeaders: (headers, api) => {
-      headers.set(
-        'Authorization',
-        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN ?? ''}`,
-      );
-      return headers;
-    },
-  }),
-  tagTypes: ['Playlists'],
+export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => {
     return {
       fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
