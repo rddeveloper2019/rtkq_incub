@@ -1,4 +1,4 @@
-import type { PlaylistsResponse } from './playlistsApi.types';
+import type { PlaylistData, PlaylistsResponse } from './playlistsApi.types';
 
 export const playlistsStubResponse: PlaylistsResponse = {
   data: [
@@ -556,5 +556,32 @@ export const playlistsStubResponse: PlaylistsResponse = {
     pageSize: 20,
     totalCount: 828,
     pagesCount: 42,
+  },
+};
+
+export const createPlaylistStubResponse: { data: PlaylistData } = {
+  data: {
+    id: '06780661-f9d5-45ad-96dd-f8fe20f856aa',
+    type: 'playlists',
+    attributes: {
+      title: 'test-title',
+      description: 'test-description',
+      addedAt: '2026-04-02T17:33:37.880Z',
+      updatedAt: '2026-04-02T17:33:37.880Z',
+      order: -1,
+      user: {
+        id: '1498',
+        name: 'fatzey_a4d',
+      },
+      images: {
+        main: [],
+      },
+      tags: [],
+      currentUserReaction: 0,
+      likesCount: 0,
+      dislikesCount: 0,
+      tracksCount: 0,
+      duration: 0,
+    },
   },
 };
