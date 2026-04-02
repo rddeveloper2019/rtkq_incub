@@ -1,10 +1,9 @@
 import {
   useDeletePlaylistMutation,
   useFetchPlaylistsQuery,
-  useUpdatePlaylistMutation,
 } from '@/features/playlists/api/playlistsApi';
 import { playlistsStubResponse } from '@/features/playlists/api/stubs';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { CreatePlaylistForm } from './CreatePlaylistForm/CreatePlaylistForm';
 import type {
