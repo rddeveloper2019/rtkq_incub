@@ -11,21 +11,21 @@ export const playlistsApi = createApi({
   reducerPath: 'playlistsApi',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
+    baseUrl: import.meta.env.VITE_BASE_URL ?? '',
     headers: {
-      // 'API-KEY': import.meta.env.VITE_API_KEY,
+      // 'API-KEY': import.meta.env.VITE_API_KEY ?? '',
       'content-type': 'application/json; charset=utf-8',
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     prepareHeaders: (headers, api) => {
       headers.set(
         'Authorization',
-        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`,
+        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN ?? ''}`,
       );
       return headers;
     },
   }),
-
+  tagTypes: ['Playlists'],
   endpoints: (build) => {
     return {
       fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
@@ -35,6 +35,7 @@ export const playlistsApi = createApi({
             params,
           };
         },
+        providesTags: ['Playlists'],
       }),
       createPlaylist: build.mutation<
         { data: PlaylistData },
@@ -50,12 +51,14 @@ export const playlistsApi = createApi({
             },
           },
         }),
+        invalidatesTags: ['Playlists'],
       }),
       deletePlaylist: build.mutation<void, PlaylistData['id']>({
         query: (playlistId) => ({
           url: `playlists/${playlistId}`,
           method: 'delete',
         }),
+        invalidatesTags: ['Playlists'],
       }),
       updatePlaylist: build.mutation<
         void,
@@ -71,6 +74,7 @@ export const playlistsApi = createApi({
             },
           },
         }),
+        invalidatesTags: ['Playlists'],
       }),
     };
   },
