@@ -11,17 +11,20 @@ import type {
   UpdatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types';
 import s from './PlaylistsPage.module.css';
-import { useState } from 'react';
+import { useDeferredValue, useEffect, useState } from 'react';
 import { EditPlaylistForm } from '../EditPlaylistForm/EditPlaylistForm';
 import { PlaylistItem } from '../PlaylistItem/PlaylistItem';
+import { useDebounceValue } from '@/common';
 export const PlaylistsPage = () => {
   const [playlistId, setPlaylistId] = useState<string | null>(null);
-
+  const [search, setSearch] = useState('');
+  const debounceSearch = useDebounceValue(search);
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>();
 
-  const { data = { data: playlistsStubResponse.data } } =
+  const { data = { data: playlistsStubResponse.data }, isLoading } =
     useFetchPlaylistsQuery({
       pageSize: 20,
+      search: debounceSearch,
     });
 
   const [deletePlaylist] = useDeletePlaylistMutation();
@@ -49,7 +52,14 @@ export const PlaylistsPage = () => {
     <div className={s.container}>
       <h1>Playlists page</h1>
       <CreatePlaylistForm />
+      <input
+        type="search"
+        placeholder={'Search playlist by title'}
+        onChange={(e) => setSearch(e.currentTarget.value)}
+      />
       <div className={s.items}>
+        {!data?.data.length && !isLoading && <h2>Playlists not found</h2>}
+
         {data?.data.map((playlist) => {
           const isEditing = playlistId === playlist.id;
 
