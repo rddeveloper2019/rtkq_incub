@@ -1,11 +1,6 @@
 import type { PlaylistData } from '@/features/playlists/api/playlistsApi.types';
-import defaultCover from '@/assets/images/default-playlist-cover.png';
-import s from './PlaylistItem.module.css';
-import {
-  useDeletePlaylistCoverMutation,
-  useUploadPlaylistCoverMutation,
-} from '@/features/playlists/api/playlistsApi';
-import type { ComponentProps } from 'react';
+import { PlaylistCover } from '../PlaylistCover/PlaylistCover';
+import { PlaylistDescription } from '../PlaylistDescription/PlaylistDescription';
 
 type Props = {
   playlist: PlaylistData;
@@ -18,55 +13,15 @@ export const PlaylistItem = ({
   editPlaylist,
   deletePlaylist,
 }: Props) => {
-  const [uploadCover] = useUploadPlaylistCoverMutation();
-  const [deleteCover] = useDeletePlaylistCoverMutation();
-  const originalCover = playlist.attributes.images.main?.find(
-    (img) => img.type === 'original',
-  );
-  const src = originalCover ? originalCover?.url : defaultCover;
-
-  const uploadCoverHandler: ComponentProps<'input'>['onChange'] = (e) => {
-    const maxSize = 1024 * 1024; // 1 MB
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    const file = e.target.files?.length && e.target.files[0];
-    if (!file) return;
-
-    if (!allowedTypes.includes(file.type)) {
-      alert('Only JPEG, PNG or GIF images are allowed');
-      return;
-    }
-
-    if (file.size > maxSize) {
-      alert(
-        `The file is too large. Max size is ${Math.round(maxSize / 1024)} KB`,
-      );
-      return;
-    }
-    uploadCover({
-      playlistId: playlist.id,
-      file,
-    });
-  };
-
-  const deleteCoverHandler = () => {
-    deleteCover({ playlistId: playlist.id });
-  };
   return (
     <div>
-      <img src={src} alt={'cover'} width={'100px'} className={s.cover} />
-      <input
-        type="file"
-        accept="image/jpeg,image/png,image/gif"
-        onChange={uploadCoverHandler}
+      <PlaylistCover
+        playlistId={playlist.id}
+        images={playlist.attributes.images}
       />
-      <div>title: {playlist.attributes.title}</div>
-      <div>description: {playlist.attributes.description}</div>
-      <div>userName: {playlist.attributes.user.name}</div>
+      <PlaylistDescription attributes={playlist.attributes} />
       <button onClick={() => deletePlaylist(playlist.id)}>delete</button>
-      <button onClick={() => editPlaylist(playlist)}>update</button>{' '}
-      {originalCover && (
-        <button onClick={() => deleteCoverHandler()}>delete cover</button>
-      )}
+      <button onClick={() => editPlaylist(playlist)}>update</button>
     </div>
   );
 };
