@@ -19,11 +19,18 @@ export const PlaylistsPage = () => {
       meta: playlistsStubResponse.meta,
     },
     isLoading,
-  } = useFetchPlaylistsQuery({
-    pageSize,
-    pageNumber: currentPage,
-    search: debounceSearch,
-  });
+  } = useFetchPlaylistsQuery(
+    {
+      pageSize,
+      pageNumber: currentPage,
+      search: debounceSearch,
+    },
+    {
+      refetchOnFocus: true,
+      pollingInterval: 300000,
+      skipPollingIfUnfocused: true,
+    },
+  );
 
   const changePageSizeHandler = (size: number) => {
     setPageSize(size);
