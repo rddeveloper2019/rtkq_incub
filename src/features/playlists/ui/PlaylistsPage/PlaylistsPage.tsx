@@ -5,7 +5,7 @@ import {
 import { playlistsStubResponse } from '@/features/playlists/api/stubs';
 import { useForm } from 'react-hook-form';
 
-import { CreatePlaylistForm } from './CreatePlaylistForm/CreatePlaylistForm';
+import { CreatePlaylistForm } from '../CreatePlaylistForm/CreatePlaylistForm';
 import type {
   PlaylistData,
   UpdatePlaylistArgs,
@@ -21,7 +21,7 @@ export const PlaylistsPage = () => {
 
   const { data = { data: playlistsStubResponse.data } } =
     useFetchPlaylistsQuery({
-      pageSize: 3,
+      pageSize: 20,
     });
 
   const [deletePlaylist] = useDeletePlaylistMutation();
