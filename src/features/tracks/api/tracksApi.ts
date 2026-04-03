@@ -12,18 +12,11 @@ export const tracksApi = baseApi.injectEndpoints({
         initialPageParam: undefined,
         getNextPageParam: (
           lastPage: FetchTracksResponse,
-          allPages: FetchTracksResponse[],
-          lastPageParam: string | undefined,
-          allPageParams: (string | undefined)[],
-          queryArg: void,
+          // allPages: FetchTracksResponse[],
+          // lastPageParam: string | undefined,
+          // allPageParams: (string | undefined)[],
+          // queryArg: void,
         ) => {
-          console.log('(**) => {}: ', {
-            lastPage,
-            allPages,
-            lastPageParam,
-            allPageParams,
-            queryArg,
-          });
           return lastPage?.meta?.nextCursor || null;
         },
       },

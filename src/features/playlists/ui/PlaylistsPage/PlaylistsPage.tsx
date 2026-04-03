@@ -6,6 +6,7 @@ import s from './PlaylistsPage.module.css';
 import { useState, type ChangeEvent } from 'react';
 import { Pagination, useDebounceValue } from '@/common';
 import { PlaylistsList } from '../PlaylistsList/PlaylistsList';
+import { LinearProgress } from '@/common/components/LinearProgress/LinearProgress';
 
 export const PlaylistsPage = () => {
   const [search, setSearch] = useState('');
@@ -19,6 +20,8 @@ export const PlaylistsPage = () => {
       meta: playlistsStubResponse.meta,
     },
     isLoading,
+    isFetching,
+    status,
   } = useFetchPlaylistsQuery(
     {
       pageSize,
@@ -31,7 +34,6 @@ export const PlaylistsPage = () => {
       skipPollingIfUnfocused: true,
     },
   );
-
   const changePageSizeHandler = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
@@ -40,7 +42,7 @@ export const PlaylistsPage = () => {
     setSearch(e.currentTarget.value);
     setCurrentPage(1);
   };
-
+  if (isLoading) return <h1>Skeleton loader...</h1>;
   return (
     <div className={s.container}>
       <h1>Playlists page</h1>
