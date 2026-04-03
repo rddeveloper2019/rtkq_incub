@@ -11,10 +11,11 @@ import type {
   UpdatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types';
 import s from './PlaylistsPage.module.css';
-import { useDeferredValue, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { EditPlaylistForm } from '../EditPlaylistForm/EditPlaylistForm';
 import { PlaylistItem } from '../PlaylistItem/PlaylistItem';
 import { useDebounceValue } from '@/common';
+
 export const PlaylistsPage = () => {
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
