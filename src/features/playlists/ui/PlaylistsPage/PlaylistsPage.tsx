@@ -6,7 +6,7 @@ import s from './PlaylistsPage.module.css';
 import { useState, type ChangeEvent } from 'react';
 import { Pagination, useDebounceValue } from '@/common';
 import { PlaylistsList } from '../PlaylistsList/PlaylistsList';
-import { LinearProgress } from '@/common/components/LinearProgress/LinearProgress';
+import { toast } from 'react-toastify';
 
 export const PlaylistsPage = () => {
   const [search, setSearch] = useState('');
@@ -20,8 +20,8 @@ export const PlaylistsPage = () => {
       meta: playlistsStubResponse.meta,
     },
     isLoading,
-    isFetching,
-    status,
+    error,
+    isError,
   } = useFetchPlaylistsQuery(
     {
       pageSize,
@@ -34,6 +34,7 @@ export const PlaylistsPage = () => {
       skipPollingIfUnfocused: true,
     },
   );
+
   const changePageSizeHandler = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
@@ -43,6 +44,25 @@ export const PlaylistsPage = () => {
     setCurrentPage(1);
   };
   if (isLoading) return <h1>Skeleton loader...</h1>;
+
+  // if (isError) {
+  //   let message = 'Unknown error';
+  //   if ('status' in error) {
+  //     if ('error' in error) {
+  //       message = error.error;
+  //     } else {
+  //       message =
+  //         (error.data as { message: string }).message ||
+  //         (error.data as { error: string }).error ||
+  //         message;
+  //     }
+  //   } else {
+  //     message = error?.message || message;
+  //   }
+
+  //   toast(message, { type: 'error', theme: 'colored' });
+  // }
+
   return (
     <div className={s.container}>
       <h1>Playlists page</h1>
