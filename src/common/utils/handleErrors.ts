@@ -1,6 +1,7 @@
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { hasProperty } from './hasProperty';
 import { errorToast } from './errorToast';
+import { toast } from 'react-toastify';
 
 export const handleErrors = (error: FetchBaseQueryError) => {
   switch (error.status) {
@@ -27,6 +28,17 @@ export const handleErrors = (error: FetchBaseQueryError) => {
       break;
 
     default:
+      if (
+        (error.data as { errors: [{ detail: string }] })?.errors?.[0]?.detail
+      ) {
+        toast(
+          (error.data as { errors: [{ detail: string }] })?.errors?.[0]?.detail,
+          {
+            type: 'error',
+            theme: 'colored',
+          },
+        );
+      }
       errorToast(
         hasProperty(error.data, 'title') ? error.data.title : 'Unknown error',
         error,

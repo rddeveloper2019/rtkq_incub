@@ -25,9 +25,8 @@ export const EditPlaylistForm = ({
 
   const onSubmit: SubmitHandler<UpdatePlaylistArgs> = (data) => {
     if (!playlistId) return;
-    updatePlaylist({ playlistId, attributes: data }).then(() => {
-      setPlaylistId(null);
-    });
+    updatePlaylist({ playlistId, attributes: data });
+    setPlaylistId(null);
   };
 
   return (

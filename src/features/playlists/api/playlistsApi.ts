@@ -7,6 +7,7 @@ import type {
   UpdatePlaylistArgs,
 } from './playlistsApi.types';
 import { baseApi } from '@/app/baseApi';
+import { current } from '@reduxjs/toolkit';
 
 export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (build) => {
@@ -58,6 +59,53 @@ export const playlistsApi = baseApi.injectEndpoints({
           },
         }),
         invalidatesTags: ['Playlists'],
+        onQueryStarted: async (
+          { playlistId, attributes },
+          { queryFulfilled, dispatch, getState },
+        ) => {
+          const args = playlistsApi.util.selectCachedArgsForQuery(
+            getState(),
+            'fetchPlaylists',
+          );
+          debugger;
+          const patchResults: any[] = [];
+
+          args.forEach((arg) => {
+            patchResults.push(
+              dispatch(
+                playlistsApi.util.updateQueryData(
+                  'fetchPlaylists',
+                  {
+                    pageNumber: arg.pageNumber,
+                    pageSize: arg.pageSize,
+                    search: arg.search,
+                  },
+                  (state) => {
+                    const index = state?.data
+                      ? state.data.findIndex(
+                          (playlist) => playlist.id === playlistId,
+                        )
+                      : -1;
+                    if (index > -1) {
+                      state.data[index].attributes = {
+                        ...state.data[index].attributes,
+                        ...attributes,
+                      };
+                    }
+                  },
+                ),
+              ),
+            );
+          });
+
+          try {
+            await queryFulfilled;
+          } catch {
+            patchResults.forEach((patchResult) => {
+              patchResult.undo();
+            });
+          }
+        },
       }),
       uploadPlaylistCover: build.mutation<
         Images,
