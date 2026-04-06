@@ -67,7 +67,6 @@ export const playlistsApi = baseApi.injectEndpoints({
             getState(),
             'fetchPlaylists',
           );
-          debugger;
           const patchResults: any[] = [];
 
           args.forEach((arg) => {

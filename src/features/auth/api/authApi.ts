@@ -1,12 +1,21 @@
 import { baseApi } from '@/app/baseApi';
-import type { MeResponse } from './authApi.types';
+import type { LoginArgs, LoginResponse, MeResponse } from './authApi.types';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getMe: build.query<MeResponse, void>({
       query: () => `auth/me`,
     }),
+    login: build.mutation<LoginResponse, LoginArgs>({
+      query: (payload) => {
+        return {
+          method: 'post',
+          url: `auth/login`,
+          body: { ...payload, accessTokenTTL: '3m' },
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetMeQuery } = authApi;
+export const { useGetMeQuery, useLoginMutation } = authApi;

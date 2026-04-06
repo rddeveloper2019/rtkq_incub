@@ -2,6 +2,11 @@
   border-bottom: 1px solid black;
   padding-left: 100px;
 }
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 
 .list {
   display: flex;
